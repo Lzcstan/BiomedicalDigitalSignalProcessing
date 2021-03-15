@@ -34,14 +34,14 @@ void DoConv();
 void DoInverseConv();
 
 int main(int argc, char** argv) {
-    //step 1»­³öÍ¼Æ¬
+    //step 1ç”»å‡ºå›¾ç‰‡
     Mat GT = imread("screenshot.bmp", 0);
     if (!GT.data)return -1;
     GT.convertTo(GT, CV_8UC1);
     imshow("GT", GT);
     imwrite("GT.bmp", GT);
     
-    //step 2¾í»ı
+    //step 2å·ç§¯
     Mat srcDC = imread("GT.bmp", 0);
     if (!srcDC.data)return -1;
     Mat DCtmp = convSecondGaussian(srcDC);
@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
     imwrite("DoConv.bmp", resDC);
     //waitKey(0);
 
-    //step 3¼ÓÔëÉù
+    //step 3åŠ å™ªå£°
     //void AddGaussianNoise();
     Mat srcAGN = imread("DoConv.bmp", 0);
     //cout << srcImg2.type();
@@ -64,12 +64,12 @@ int main(int argc, char** argv) {
     imwrite("AddGaussianNoise.bmp", resAGN);
     //waitKey(0);
 
-    //step4Äæ¾í»ı
+    //step4é€†å·ç§¯
     //void DoInverseConv();
     Mat Y;
     imread("AddGaussianNoise.bmp", 0).convertTo(Y, CV_64F);
     if (!Y.data)return -1;
-    //x1Îª0
+    //x1ä¸º0
     Mat DICtmp1 = Mat::zeros(256, 256, CV_64F);
     Mat resDIC1;
 
@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
     DICtmp1.convertTo(resDIC1, CV_8UC1);
     imshow("DoInverseConv_InputZero_300", resDIC1);
     imwrite("DoInverseConv_InputZero_300.bmp", resDIC1);//300
-    //x1Îª¾ùÔÈËæ»ú·Ö²¼
+    //x1ä¸ºå‡åŒ€éšæœºåˆ†å¸ƒ
     Mat DICtmp2(256, 256, CV_64F);
     randu(DICtmp2, Scalar::all(0.), Scalar::all(1.));
     Mat resDIC2;
@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
     DICtmp2.convertTo(resDIC2, CV_8UC1);
     imshow("DoInverseConv_InputUnion_300", resDIC2);
     imwrite("DoInverseConv_InputUnion_300.bmp", resDIC2);//300
-    //x1Îª¸ßË¹Ëæ»ú·Ö²¼
+    //x1ä¸ºé«˜æ–¯éšæœºåˆ†å¸ƒ
     Mat DICtmp3(256, 256, CV_64F);
     randn(DICtmp3, Scalar::all(0.), Scalar::all(1.));
     Mat resDIC3;
@@ -130,7 +130,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-Mat matrix_multiply(Mat& mat_a, Mat& mat_b) {//¾ØÕó³Ë·¨
+Mat matrix_multiply(Mat& mat_a, Mat& mat_b) {//çŸ©é˜µä¹˜æ³•
     assert(mat_a.cols == mat_b.rows);
     int dimi = mat_a.rows;
     int dimj = mat_b.rows;
@@ -146,12 +146,12 @@ Mat matrix_multiply(Mat& mat_a, Mat& mat_b) {//¾ØÕó³Ë·¨
     }
     return mat_c;
 }
-//È¡ÖĞ¼ä¿é
+//å–ä¸­é—´å—
 Mat M(Mat& src, int doublep1, int doublep2,int m,int n) {
-    Mat m0 = src(cv::Range(doublep1, m+ doublep1), cv::Range(doublep2, n+doublep2));//×¢Òâ£¬Range(s,e)µÃµ½[s,e)
+    Mat m0 = src(cv::Range(doublep1, m+ doublep1), cv::Range(doublep2, n+doublep2));//æ³¨æ„ï¼ŒRange(s,e)å¾—åˆ°[s,e)
     return m0;
 }
-//µ¹Ğò¾ØÕó
+//å€’åºçŸ©é˜µ
 Mat bar(Mat& src) {
     Mat src_bar = src.clone();
     int nRows = src.rows;
@@ -173,7 +173,7 @@ Mat bar(Mat& src) {
     }
     return src_bar;
 }
-//Á½¾ØÕó×ö¾í»ı£¬Ç°ÕßÎª<uchar/double>x£¬ºóÕßÎª<double>h£¬×¢ÒâhĞĞÁĞÒ»¶¨ÎªÆæÊı
+//ä¸¤çŸ©é˜µåšå·ç§¯ï¼Œå‰è€…ä¸º<uchar/double>xï¼Œåè€…ä¸º<double>hï¼Œæ³¨æ„hè¡Œåˆ—ä¸€å®šä¸ºå¥‡æ•°
 Mat secondConv(Mat& x, Mat& h)
 {
     int m = x.rows;
@@ -257,16 +257,16 @@ Mat generateSecondGaussianMat(int p, double sigma, bool normalization = true) {
     }
     return res;
 }
-//ÎªÍ¼ÏñÌí¼Ó¸ßË¹ÔëÉù
+//ä¸ºå›¾åƒæ·»åŠ é«˜æ–¯å™ªå£°
 Mat addGaussianNoise(Mat& srcImage)
 {
-    Mat resultImage = srcImage.clone();    //Éî¿½±´,¿ËÂ¡
-    int channels = resultImage.channels();    //»ñÈ¡Í¼ÏñµÄÍ¨µÀ
-    int nRows = resultImage.rows;    //Í¼ÏñµÄĞĞÊı
+    Mat resultImage = srcImage.clone();    //æ·±æ‹·è´,å…‹éš†
+    int channels = resultImage.channels();    //è·å–å›¾åƒçš„é€šé“
+    int nRows = resultImage.rows;    //å›¾åƒçš„è¡Œæ•°
 
-    int nCols = resultImage.cols * channels;   //Í¼ÏñµÄ×ÜÁĞÊı
-    //ÅĞ¶ÏÍ¼ÏñµÄÁ¬ĞøĞÔ
-    if (resultImage.isContinuous())    //ÅĞ¶Ï¾ØÕóÊÇ·ñÁ¬Ğø£¬ÈôÁ¬Ğø£¬ÎÒÃÇÏàµ±ÓÚÖ»ĞèÒª±éÀúÒ»¸öÒ»Î¬Êı×é
+    int nCols = resultImage.cols * channels;   //å›¾åƒçš„æ€»åˆ—æ•°
+    //åˆ¤æ–­å›¾åƒçš„è¿ç»­æ€§
+    if (resultImage.isContinuous())    //åˆ¤æ–­çŸ©é˜µæ˜¯å¦è¿ç»­ï¼Œè‹¥è¿ç»­ï¼Œæˆ‘ä»¬ç›¸å½“äºåªéœ€è¦éå†ä¸€ä¸ªä¸€ç»´æ•°ç»„
     {
         nCols *= nRows;
         nRows = 1;
@@ -274,7 +274,7 @@ Mat addGaussianNoise(Mat& srcImage)
     for (int i = 0; i < nRows; i++)
     {
         for (int j = 0; j < nCols; j++)
-        {    //Ìí¼Ó¸ßË¹ÔëÉù
+        {    //æ·»åŠ é«˜æ–¯å™ªå£°
             int val = resultImage.ptr<uchar>(i)[j] + generateGaussianNoise(0, 10);
             if (val < 0)
                 val = 0;
@@ -285,10 +285,10 @@ Mat addGaussianNoise(Mat& srcImage)
     }
     return resultImage;
 }
-//½«Í¼ÏñÓë¶şÎ¬¸ßË¹º¯Êı×÷¾í»ı
+//å°†å›¾åƒä¸äºŒç»´é«˜æ–¯å‡½æ•°ä½œå·ç§¯
 Mat convSecondGaussian(Mat& srcImage){
     Mat h_Gaussian = generateSecondGaussianMat(3, 1);
-    //Mat resultImage = srcImage.clone();    //Éî¿½±´,¿ËÂ¡
+    //Mat resultImage = srcImage.clone();    //æ·±æ‹·è´,å…‹éš†
     Mat resultImage = secondConv(srcImage, h_Gaussian);
     return resultImage;
 }
